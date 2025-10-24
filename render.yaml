@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: checklivebot
+    env: docker
+    plan: free
+    autoDeploy: true
+    region: oregon
+    envVars:
+      - key: DOTNET_ENVIRONMENT
+        value: Production
+      - key: BOT_TOKEN
+        value: your_bot_token_here
+    healthCheckPath: /
