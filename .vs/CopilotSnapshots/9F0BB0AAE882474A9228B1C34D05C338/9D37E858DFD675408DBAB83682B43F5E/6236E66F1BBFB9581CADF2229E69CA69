@@ -1,0 +1,479 @@
+﻿# 🤖 CheckLiveBot - Facebook UID Tracker
+
+Bot Telegram chuyên nghiệp để theo dõi trạng thái LIVE/DEAD của Facebook UID. Giúp bạn quản lý và giám sát danh sách UID Facebook một cách hiệu quả.
+
+![.NET 8](https://img.shields.io/badge/.NET-8.0-purple)
+![Telegram Bot](https://img.shields.io/badge/Telegram-Bot-blue)
+![SQLite](https://img.shields.io/badge/Database-SQLite-green)
+![C#](https://img.shields.io/badge/Language-C%23-orange)
+
+## 📋 Mục lục
+
+- [Tổng quan](#-tổng-quan)
+- [Tính năng chính](#-tính-năng-chính)
+- [Công nghệ sử dụng](#-công-nghệ-sử-dụng)
+- [Cài đặt](#-cài-đặt)
+- [Cấu hình](#-cấu-hình)
+- [Hướng dẫn sử dụng](#-hướng-dẫn-sử-dụng)
+- [Cấu trúc dự án](#-cấu-trúc-dự-án)
+- [API Commands](#-api-commands)
+- [Database Schema](#-database-schema)
+- [Đóng góp](#-đóng-góp)
+- [Liên hệ](#-liên-hệ)
+
+## 🎯 Tổng quan
+
+**CheckLiveBot** là một bot Telegram được phát triển bằng C# (.NET 8) giúp người dùng:
+
+- ✅ Theo dõi trạng thái LIVE/DEAD của Facebook UID
+- 📊 Quản lý danh sách UID với ghi chú và giá cả
+- 📈 Xem thống kê chi tiết về các UID đang theo dõi
+- 🔄 Tự động kiểm tra và cập nhật trạng thái
+- 👥 Hệ thống quản lý người dùng với thời hạn sử dụng
+
+## 🚀 Tính năng chính
+
+### 🔍 Quản lý UID Facebook
+- **Thêm UID đơn lẻ**: Thêm UID với ghi chú và giá cả
+- **Thêm danh sách UID**: Import nhiều UID cùng lúc
+- **Xem danh sách**: Hiển thị tất cả UID đang theo dõi
+- **Trạng thái real-time**: Kiểm tra LIVE/DEAD ngay lập tức
+
+### 📊 Thống kê và báo cáo
+- Tổng số UID đang theo dõi
+- Thông tin thời hạn sử dụng bot
+- Lịch sử kiểm tra gần đây
+- Thống kê hiệu suất
+
+### 👤 Quản lý người dùng
+- Hệ thống trial 5 ngày cho người dùng mới
+- Quản lý thời hạn sử dụng
+- Phân quyền truy cập
+- Lưu trữ thông tin người dùng
+
+### 🛡️ Bảo mật và ổn định
+- Xử lý lỗi toàn diện
+- Logging chi tiết
+- Rate limiting
+- Database tự động backup
+
+## 🛠️ Công nghệ sử dụng
+
+| Công nghệ | Phiên bản | Mục đích |
+|-----------|-----------|----------|
+| **.NET** | 8.0 | Framework chính |
+| **C#** | 12.0 | Ngôn ngữ lập trình |
+| **Telegram.Bot** | 22.6.1-dev.2 | Telegram Bot API |
+| **Entity Framework Core** | 9.0.8 | ORM |
+| **SQLite** | - | Database |
+
+## 📦 Cài đặt
+
+### Yêu cầu hệ thống
+- .NET 8.0 SDK
+- Windows/Linux/macOS
+- 50MB dung lượng trống
+
+### Bước 1: Clone repository
+```bash
+git clone <repository-url>
+cd CheckLiveBot
+```
+
+### Bước 2: Restore packages
+```bash
+dotnet restore
+```
+
+### Bước 3: Build project
+```bash
+dotnet build
+```
+
+### Bước 4: Chạy ứng dụng
+```bash
+dotnet run
+```
+
+## ⚙️ Cấu hình
+
+### 1. Telegram Bot Token
+Trong file `Program.cs`, thay đổi `BotToken`:
+
+```csharp
+private static readonly string BotToken = "YOUR_BOT_TOKEN_HERE";
+```
+
+### 2. Database
+Bot sử dụng SQLite database tự động tạo file `checkLiveBot.db` khi khởi động lần đầu.
+
+### 3. Facebook API
+Bot sử dụng Facebook Graph API để kiểm tra trạng thái UID:
+```
+https://graph.facebook.com/{uid}/picture?redirect=false
+```
+
+## 📖 Hướng dẫn sử dụng
+
+### Bắt đầu với bot
+
+1. **Khởi động bot**: Gửi lệnh `/start`
+2. **Xem hướng dẫn**: Gửi lệnh `/help`
+
+### Các lệnh cơ bản
+
+| Lệnh | Mô tả | Ví dụ |
+|------|-------|-------|
+| `/start` | Hiển thị menu chính | `/start` |
+| `/help` | Xem hướng dẫn sử dụng | `/help` |
+| `/add` | Thêm UID đơn lẻ | `/add 100012345678901 VIP khách \| 50000` |
+| `/addlist` | Thêm danh sách UID | `/addlist` |
+| `/list` | Xem danh sách UID | `/list` |
+| `/stats` | Xem thống kê | `/stats` |
+| `/history` | Xem lịch sử | `/history` |
+
+### Định dạng thêm UID
+
+**Thêm UID đơn lẻ:**
+```
+/add [UID] [Ghi chú] | [Giá]
+```
+
+**Ví dụ:**
+```
+/add 100012345678901 VIP khách | 50000
+```
+
+**Thêm danh sách UID:**
+```
+100012345678901 VIP khách | 50000
+100012345678902 Premium acc | 75000
+100012345678903 Normal acc | 25000
+```
+
+### Menu Inline
+
+Bot cung cấp menu tương tác với các nút:
+
+- ➕ **Thêm UID**: Thêm UID mới
+- 📋 **Danh sách UID**: Xem tất cả UID
+- 📊 **Thống kê**: Xem thống kê cá nhân
+- ❓ **Hướng dẫn**: Xem hướng dẫn chi tiết
+
+## 🏗️ Cấu trúc dự án
+
+```
+CheckLiveBot/
+├── 📁 Database/
+│   ├── AppDbContext.cs          # Entity Framework DbContext
+│   └── Services/
+│       └── DatabaseService.cs  # Database operations
+├── 📁 Helpers/
+│   └── CheckLiveUid.cs         # Facebook UID checker
+├── 📁 Models/
+│   ├── User.cs                 # User model
+│   └── TrackedUid.cs          # TrackedUid model
+├── 📄 Program.cs              # Main application entry
+├── 📄 CheckLiveBot.csproj     # Project file
+└── 📄 README.md               # This file
+```
+
+### Chi tiết các thành phần
+
+#### 🗃️ Models
+- **User**: Quản lý thông tin người dùng Telegram
+- **TrackedUid**: Lưu trữ thông tin UID Facebook được theo dõi
+
+#### 🔧 Services
+- **DatabaseService**: Xử lý tất cả operations với database
+- **CheckLiveUid**: Kiểm tra trạng thái Facebook UID
+
+#### 🎮 Program.cs
+- Telegram bot handlers
+- Message processing
+- Callback query handling
+- User interface management
+
+## 📡 API Commands
+
+### Bot Commands
+
+| Command | Handler | Description |
+|---------|---------|-------------|
+| `/start` | `SendWelcomeMenuAsync` | Hiển thị menu chính |
+| `/help` | `SendUidHelpMessageAsync` | Hướng dẫn sử dụng |
+| `/add` | `HandleAddSingleUidAsync` | Thêm UID đơn lẻ |
+| `/addlist` | Message handler | Thêm danh sách UID |
+| `/list` | `HandleViewUidListAsync` | Xem danh sách UID |
+| `/stats` | `SendUserStatsAsync` | Thống kê người dùng |
+| `/history` | `SendUserHistoryAsync` | Lịch sử kiểm tra |
+
+### Callback Queries
+
+| Callback Data | Handler | Description |
+|---------------|---------|-------------|
+| `add_uid` | Callback handler | Hướng dẫn thêm UID |
+| `list_uids` | `HandleViewUidListAsync` | Hiển thị danh sách |
+| `stats` | `SendUserStatsAsync` | Hiển thị thống kê |
+| `help` | `SendHelpMessageAsync` | Hiển thị help |
+| `back_to_menu` | `SendWelcomeMenuAsync` | Quay về menu |
+
+## 🗄️ Database Schema
+
+### Table: Users
+| Column | Type | Description |
+|--------|------|-------------|
+| `Id` | INTEGER | Primary key |
+| `TelegramUserId` | BIGINT | Telegram user ID (unique) |
+| `TelegramUsername` | TEXT | Telegram username |
+| `ExpiryDate` | DATETIME | Ngày hết hạn sử dụng |
+| `CreatedAt` | DATETIME | Ngày tạo tài khoản |
+| `IsActive` | BOOLEAN | Trạng thái hoạt động |
+
+### Table: TrackedUids
+| Column | Type | Description |
+|--------|------|-------------|
+| `Id` | INTEGER | Primary key |
+| `UserId` | INTEGER | Foreign key to Users |
+| `Uid` | TEXT(20) | Facebook UID |
+| `Note` | TEXT | Ghi chú của người dùng |
+| `Price` | TEXT | Giá của UID |
+| `IsLive` | BOOLEAN | Trạng thái LIVE/DEAD |
+| `LastChecked` | DATETIME | Lần kiểm tra cuối |
+
+### Relationships
+- `Users` 1:N `TrackedUids` (Một user có thể theo dõi nhiều UID)
+
+## 🔍 Cách hoạt động
+
+### 1. Kiểm tra Facebook UID
+```csharp
+// Gửi request đến Facebook Graph API
+var response = await httpClient.GetAsync($"https://graph.facebook.com/{uid}/picture?redirect=false");
+var cRes = await response.Content.ReadAsStringAsync();
+
+// Kiểm tra response có chứa "height" và "width"
+if (cRes.Contains("height") && cRes.Contains("width"))
+{
+    return "live"; // UID còn hoạt động
+}
+return "die"; // UID đã bị khóa/xóa
+```
+
+### 2. Quản lý người dùng
+- **Trial**: Người dùng mới được 5 ngày dùng thử
+- **Authorization**: Kiểm tra thời hạn trước mỗi lệnh
+- **Auto-creation**: Tự động tạo user khi lần đầu sử dụng
+
+### 3. Lưu trữ dữ liệu
+- **SQLite**: Database nhẹ, không cần cài đặt
+- **Entity Framework**: ORM hiện đại, type-safe
+- **Auto-migration**: Tự động tạo/update database schema
+
+## 🎨 Giao diện người dùng
+
+### Menu chính
+```
+🎯 Chào mừng [Tên người dùng]!
+
+Bot này giúp bạn theo dõi trạng thái UID Facebook.
+Bạn có thể thêm UID và xem trạng thái LIVE/DEAD được cập nhật tự động.
+
+📱 Tính năng:
+• Thêm UID vào danh sách theo dõi
+• Xem danh sách UID đang theo dõi  
+• Xem thống kê LIVE/DEAD
+• Xem hướng dẫn sử dụng
+
+[➕ Thêm UID] [📋 Danh sách UID]
+[📊 Thống kê]   [❓ Hướng dẫn]
+```
+
+### Danh sách UID
+```
+📋 Danh sách UID đang theo dõi
+
+1. 🆔 100012345678901 - ✅ LIVE
+   📝 VIP khách | 💰 50000 | ⏱ 01/15 14:30
+
+2. 🆔 100012345678902 - ❌ DEAD  
+   📝 Premium acc | 💰 75000 | ⏱ 01/15 14:25
+
+3. 🆔 100012345678903 - ✅ LIVE
+   📝 Normal acc | 💰 25000 | ⏱ 01/15 14:20
+```
+
+### Thống kê
+```
+📊 Thống kê của bạn
+
+📅 Hết hạn: 2025-01-20 23:59 UTC
+⏰ Còn lại: 5 ngày
+
+🔢 Tổng UID đang theo dõi: 15
+```
+
+## 🛡️ Bảo mật
+
+### User Authorization
+- Kiểm tra thời hạn sử dụng trước mỗi lệnh
+- Trial 5 ngày cho người dùng mới
+- Thông báo khi hết hạn với thông tin liên hệ admin
+
+### Error Handling
+- Try-catch toàn diện cho tất cả operations
+- Logging errors ra console
+- Graceful error messages cho người dùng
+
+### Rate Limiting
+- Delay 1 giây giữa các lần kiểm tra UID
+- Prevent spam và overload Facebook API
+
+## 🔧 Bảo trì và Monitoring
+
+### Logging
+```csharp
+Console.WriteLine($"Received message: '{messageText}' from {user?.FirstName}");
+Console.WriteLine($"Error in HandleAddSingleUidAsync: {ex.Message}");
+Console.WriteLine($"Polling error: {exception.Message}");
+```
+
+### Database Backup
+- SQLite file có thể được backup dễ dàng
+- Recommend backup hàng ngày file `checkLiveBot.db`
+
+### Performance Monitoring
+- Monitor response time của Facebook API
+- Track số lượng UID được kiểm tra mỗi ngày
+- Monitor memory usage và CPU
+
+## 🚀 Deployment
+
+### Local Development
+```bash
+# Clone và run locally
+git clone <repo>
+cd CheckLiveBot
+dotnet run
+```
+
+### Production Deployment
+
+#### Option 1: Self-contained deployment
+```bash
+dotnet publish -c Release -r win-x64 --self-contained
+```
+
+#### Option 2: Docker (tạo Dockerfile)
+```dockerfile
+FROM mcr.microsoft.com/dotnet/runtime:8.0
+COPY bin/Release/net8.0/publish/ App/
+WORKDIR /App
+ENTRYPOINT ["dotnet", "CheckLiveBot.dll"]
+```
+
+#### Option 3: Windows Service
+Sử dụng `Microsoft.Extensions.Hosting` để chạy như Windows Service.
+
+## 📊 Metrics và Analytics
+
+### Key Metrics
+- **Daily Active Users**: Số người dùng hoạt động hàng ngày
+- **UID Check Rate**: Số UID được kiểm tra mỗi ngày
+- **Success Rate**: Tỷ lệ thành công của API calls
+- **User Retention**: Tỷ lệ người dùng quay lại
+
+### Monitoring Tools
+- Application Insights (nếu deploy trên Azure)
+- Custom logging với Serilog
+- Health checks cho database và external APIs
+
+## 🔄 Future Enhancements
+
+### Planned Features
+- [ ] **Auto-recheck**: Tự động kiểm tra lại UID theo lịch
+- [ ] **Export data**: Xuất danh sách UID ra Excel/CSV
+- [ ] **Bulk operations**: Xóa nhiều UID cùng lúc
+- [ ] **Notifications**: Thông báo khi UID chuyển đổi trạng thái
+- [ ] **Admin panel**: Web dashboard cho admin
+- [ ] **Multiple Facebook APIs**: Sử dụng nhiều phương thức check
+- [ ] **User groups**: Chia sẻ UID lists giữa users
+- [ ] **Payment integration**: Tích hợp thanh toán tự động
+
+### Technical Improvements
+- [ ] **Redis caching**: Cache kết quả check UID
+- [ ] **Message queuing**: Queue system cho bulk operations
+- [ ] **Load balancing**: Multiple bot instances
+- [ ] **Database clustering**: PostgreSQL cluster
+- [ ] **API versioning**: Versioned bot commands
+- [ ] **GraphQL API**: API cho web dashboard
+
+## 🤝 Đóng góp
+
+### Báo lỗi
+Nếu bạn phát hiện lỗi, vui lòng tạo issue với thông tin:
+- Mô tả lỗi chi tiết
+- Các bước để reproduce
+- Screenshots (nếu có)
+- Log files
+
+### Đóng góp code
+1. Fork repository
+2. Tạo feature branch
+3. Commit changes
+4. Push to branch  
+5. Create Pull Request
+
+### Coding Standards
+- Sử dụng C# naming conventions
+- Viết XML documentation cho public methods
+- Unit tests cho business logic
+- Follow SOLID principles
+
+## 📄 License
+
+Dự án này được phát hành dưới MIT License. Xem file [LICENSE](LICENSE) để biết thêm chi tiết.
+
+## 📞 Liên hệ
+
+### Developer
+- **Telegram**: [@imhiendev](https://t.me/imhiendev)
+- **GitHub**: [@imhiendev](https://github.com/imhiendev)
+
+### Support
+Nếu bạn cần hỗ trợ:
+1. Tạo issue trên GitHub
+2. Liên hệ trực tiếp qua Telegram: [@imhiendev](https://t.me/imhiendev)
+3. Email: [contact information]
+
+### Business Inquiry
+Để hợp tác kinh doanh hoặc custom development:
+- Telegram: [@imhiendev](https://t.me/imhiendev)
+
+---
+
+## ⭐ Acknowledgments
+
+- **Telegram Bot API**: Cảm ơn Telegram team vì API tuyệt vời
+- **Entity Framework**: Microsoft EF Core team
+- **.NET Community**: Cộng đồng .NET Việt Nam
+- **Beta Testers**: Những người dùng đầu tiên đã test và feedback
+
+---
+
+## 📈 Project Stats
+
+![GitHub stars](https://img.shields.io/github/stars/username/CheckLiveBot)
+![GitHub forks](https://img.shields.io/github/forks/username/CheckLiveBot)
+![GitHub issues](https://img.shields.io/github/issues/username/CheckLiveBot)
+![GitHub last commit](https://img.shields.io/github/last-commit/username/CheckLiveBot)
+
+---
+
+<div align="center">
+
+**Made with ❤️ by [@imhiendev](https://t.me/imhiendev)**
+
+*Nếu project này hữu ích với bạn, hãy cho một ⭐ star nhé!*
+
+</div>

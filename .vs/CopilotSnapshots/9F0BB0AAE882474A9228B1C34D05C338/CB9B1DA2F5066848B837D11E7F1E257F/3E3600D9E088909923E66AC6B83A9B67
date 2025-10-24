@@ -1,0 +1,303 @@
+﻿using Telegram.Bot;
+using Telegram.Bot.Polling;
+using Telegram.Bot.Types;
+using Telegram.Bot.Types.Enums;
+using Telegram.Bot.Types.ReplyMarkups;
+
+namespace CheckLiveBot
+{
+    internal class Program
+    {
+        private static ITelegramBotClient? _botClient;
+        private static readonly string BotToken = "7403417415:AAFafX4qs1bvmounVPC--ySVzV0WOg7JucY";
+
+        static async Task Main(string[] args)
+        {
+            Console.WriteLine("Starting CheckLiveBot...");
+
+            // Initialize the bot client
+            _botClient = new TelegramBotClient(BotToken);
+
+            // Test the connection
+            try
+            {
+                var me = await _botClient.GetMeAsync();
+                Console.WriteLine($"Bot connected successfully! Bot name: {me.FirstName} (@{me.Username})");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error connecting to bot: {ex.Message}");
+                return;
+            }
+
+            // Set up message handling
+            var receiverOptions = new ReceiverOptions
+            {
+                AllowedUpdates = Array.Empty<UpdateType>() // Receive all update types
+            };
+
+            // Start receiving updates
+            _botClient.StartReceiving(
+                updateHandler: HandleUpdateAsync,
+                pollingErrorHandler: HandlePollingErrorAsync,
+                receiverOptions: receiverOptions
+            );
+
+            Console.WriteLine("Bot is running and waiting for messages...");
+            Console.WriteLine("Press Ctrl+C to stop the bot");
+
+            // Keep the application running
+            var cancellationTokenSource = new CancellationTokenSource();
+            Console.CancelKeyPress += (sender, e) =>
+            {
+                e.Cancel = true;
+                cancellationTokenSource.Cancel();
+            };
+
+            try
+            {
+                await Task.Delay(-1, cancellationTokenSource.Token);
+            }
+            catch (TaskCanceledException)
+            {
+                Console.WriteLine("Bot stopped.");
+            }
+        }
+
+        private static async Task HandleUpdateAsync(ITelegramBotClient botClient, Update update, CancellationToken cancellationToken)
+        {
+            try
+            {
+                // Handle different types of updates
+                if (update.Type == UpdateType.Message && update.Message?.Text is { } messageText)
+                {
+                    await HandleMessageAsync(botClient, update.Message, cancellationToken);
+                }
+                else if (update.Type == UpdateType.CallbackQuery && update.CallbackQuery is { } callbackQuery)
+                {
+                    await HandleCallbackQueryAsync(botClient, callbackQuery, cancellationToken);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error handling update: {ex.Message}");
+            }
+        }
+
+        private static async Task HandleMessageAsync(ITelegramBotClient botClient, Message message, CancellationToken cancellationToken)
+        {
+            var chatId = message.Chat.Id;
+            var messageText = message.Text!;
+            var user = message.From;
+
+            Console.WriteLine($"Received message: '{messageText}' from {user?.FirstName} ({user?.Username}) in chat {chatId}");
+
+            // Handle /start command
+            if (messageText.StartsWith("/start"))
+            {
+                await SendWelcomeMenuAsync(botClient, chatId, user?.FirstName ?? "User", cancellationToken);
+            }
+            // Handle Facebook ID input
+            else if (IsValidFacebookId(messageText))
+            {
+                await CheckFacebookIdAsync(botClient, chatId, messageText, cancellationToken);
+            }
+            else
+            {
+                await botClient.SendTextMessageAsync(
+                    chatId: chatId,
+                    text: "❌ Invalid Facebook ID format. Please enter a valid Facebook ID or use /start to see the menu.",
+                    cancellationToken: cancellationToken);
+            }
+        }
+
+        private static async Task HandleCallbackQueryAsync(ITelegramBotClient botClient, CallbackQuery callbackQuery, CancellationToken cancellationToken)
+        {
+            var chatId = callbackQuery.Message!.Chat.Id;
+            var callbackData = callbackQuery.Data;
+
+            // Answer the callback query to remove loading state
+            await botClient.AnswerCallbackQueryAsync(callbackQuery.Id, cancellationToken: cancellationToken);
+
+            switch (callbackData)
+            {
+                case "check_single":
+                    await botClient.SendTextMessageAsync(
+                        chatId: chatId,
+                        text: "📝 Please enter the Facebook ID you want to check:\n\nExample: 100012345678901",
+                        cancellationToken: cancellationToken);
+                    break;
+
+                case "check_bulk":
+                    await botClient.SendTextMessageAsync(
+                        chatId: chatId,
+                        text: "📋 Please send Facebook IDs separated by new lines:\n\nExample:\n100012345678901\n100012345678902\n100012345678903",
+                        cancellationToken: cancellationToken);
+                    break;
+
+                case "help":
+                    await SendHelpMessageAsync(botClient, chatId, cancellationToken);
+                    break;
+
+                case "back_to_menu":
+                    await SendWelcomeMenuAsync(botClient, chatId, callbackQuery.From.FirstName ?? "User", cancellationToken);
+                    break;
+            }
+        }
+
+        private static async Task SendWelcomeMenuAsync(ITelegramBotClient botClient, long chatId, string userName, CancellationToken cancellationToken)
+        {
+            var welcomeText = $"🎯 **Welcome to Facebook ID Checker Bot, {userName}!**\n\n" +
+                             "This bot helps you check if Facebook IDs are live (active) or not.\n\n" +
+                             "📱 **Features:**\n" +
+                             "• Check single Facebook ID\n" +
+                             "• Bulk check multiple IDs\n" +
+                             "• Real-time status updates\n\n" +
+                             "Choose an option below to get started:";
+
+            var keyboard = new InlineKeyboardMarkup(new[]
+            {
+                new[]
+                {
+                    InlineKeyboardButton.WithCallbackData("🔍 Check Single ID", "check_single"),
+                },
+                new[]
+                {
+                    InlineKeyboardButton.WithCallbackData("📋 Check Multiple IDs", "check_bulk"),
+                },
+                new[]
+                {
+                    InlineKeyboardButton.WithCallbackData("❓ Help", "help"),
+                }
+            });
+
+            await botClient.SendTextMessageAsync(
+                chatId: chatId,
+                text: welcomeText,
+                parseMode: ParseMode.Markdown,
+                replyMarkup: keyboard,
+                cancellationToken: cancellationToken);
+        }
+
+        private static async Task SendHelpMessageAsync(ITelegramBotClient botClient, long chatId, CancellationToken cancellationToken)
+        {
+            var helpText = "📖 **Help - How to use Facebook ID Checker Bot**\n\n" +
+                          "🔍 **Single ID Check:**\n" +
+                          "• Click 'Check Single ID'\n" +
+                          "• Enter a Facebook ID (numbers only)\n" +
+                          "• Get instant results\n\n" +
+                          "📋 **Bulk ID Check:**\n" +
+                          "• Click 'Check Multiple IDs'\n" +
+                          "• Send multiple IDs (one per line)\n" +
+                          "• Get results for all IDs\n\n" +
+                          "✅ **Valid Facebook ID formats:**\n" +
+                          "• 100012345678901\n" +
+                          "• 61558123456789\n\n" +
+                          "❌ **Invalid formats:**\n" +
+                          "• facebook.com/username\n" +
+                          "• @username\n" +
+                          "• Short IDs (less than 10 digits)\n\n" +
+                          "💡 **Tips:**\n" +
+                          "• Facebook IDs are usually 15-16 digits long\n" +
+                          "• You can find IDs in profile URLs\n" +
+                          "• Live = Active account, Dead = Deactivated/Deleted";
+
+            var keyboard = new InlineKeyboardMarkup(new[]
+            {
+                new[]
+                {
+                    InlineKeyboardButton.WithCallbackData("🔙 Back to Menu", "back_to_menu"),
+                }
+            });
+
+            await botClient.SendTextMessageAsync(
+                chatId: chatId,
+                text: helpText,
+                parseMode: ParseMode.Markdown,
+                replyMarkup: keyboard,
+                cancellationToken: cancellationToken);
+        }
+
+        private static async Task CheckFacebookIdAsync(ITelegramBotClient botClient, long chatId, string facebookIds, CancellationToken cancellationToken)
+        {
+            // Send "checking" message
+            var checkingMessage = await botClient.SendTextMessageAsync(
+                chatId: chatId,
+                text: "🔍 Checking Facebook ID(s)...",
+                cancellationToken: cancellationToken);
+
+            // Split IDs if multiple
+            var ids = facebookIds.Split('\n', StringSplitOptions.RemoveEmptyEntries)
+                                 .Select(id => id.Trim())
+                                 .Where(id => IsValidFacebookId(id))
+                                 .ToList();
+
+            if (ids.Count == 0)
+            {
+                await botClient.EditMessageTextAsync(
+                    chatId: chatId,
+                    messageId: checkingMessage.MessageId,
+                    text: "❌ No valid Facebook IDs found. Please check your input format.",
+                    cancellationToken: cancellationToken);
+                return;
+            }
+
+            var results = new List<string>();
+
+            foreach (var id in ids)
+            {
+                // Simulate checking Facebook ID (replace with actual checking logic)
+                await Task.Delay(1000, cancellationToken); // Simulate API call delay
+                
+                var isLive = await SimulateCheckFacebookId(id);
+                var status = isLive ? "✅ LIVE" : "❌ DEAD";
+                var profileUrl = $"https://facebook.com/{id}";
+                
+                results.Add($"🆔 `{id}`\n📊 Status: {status}\n🔗 [Profile]({profileUrl})");
+            }
+
+            var resultText = $"📋 **Facebook ID Check Results:**\n\n{string.Join("\n\n", results)}\n\n" +
+                           $"✅ Live: {results.Count(r => r.Contains("✅ LIVE"))}\n" +
+                           $"❌ Dead: {results.Count(r => r.Contains("❌ DEAD"))}\n" +
+                           $"📊 Total: {results.Count}";
+
+            var keyboard = new InlineKeyboardMarkup(new[]
+            {
+                new[]
+                {
+                    InlineKeyboardButton.WithCallbackData("🔙 Back to Menu", "back_to_menu"),
+                }
+            });
+
+            await botClient.EditMessageTextAsync(
+                chatId: chatId,
+                messageId: checkingMessage.MessageId,
+                text: resultText,
+                parseMode: ParseMode.Markdown,
+                replyMarkup: keyboard,
+                cancellationToken: cancellationToken);
+        }
+
+        private static bool IsValidFacebookId(string input)
+        {
+            // Check if input contains only digits and is between 10-20 characters
+            return input.All(char.IsDigit) && input.Length >= 10 && input.Length <= 20;
+        }
+
+        private static async Task<bool> SimulateCheckFacebookId(string facebookId)
+        {
+            // TODO: Replace this with actual Facebook API checking logic
+            // This is just a simulation - randomly returns true/false
+            await Task.Delay(500); // Simulate network delay
+            
+            // For demo purposes, IDs ending with even numbers are "live"
+            return int.Parse(facebookId.Last().ToString()) % 2 == 0;
+        }
+
+        private static Task HandlePollingErrorAsync(ITelegramBotClient botClient, Exception exception, CancellationToken cancellationToken)
+        {
+            Console.WriteLine($"Polling error: {exception.Message}");
+            return Task.CompletedTask;
+        }
+    }
+}

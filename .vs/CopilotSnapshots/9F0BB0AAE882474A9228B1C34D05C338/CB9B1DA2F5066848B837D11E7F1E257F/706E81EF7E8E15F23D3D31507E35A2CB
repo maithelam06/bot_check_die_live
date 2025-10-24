@@ -1,0 +1,177 @@
+﻿using Microsoft.EntityFrameworkCore;
+using CheckLiveBot.Data;
+using CheckLiveBot.Models;
+
+namespace CheckLiveBot.Services
+{
+    public class DatabaseService
+    {
+        private readonly AppDbContext _context;
+
+        public DatabaseService()
+        {
+            _context = new AppDbContext();
+        }
+
+        public async Task InitializeDatabaseAsync()
+        {
+            try
+            {
+                await _context.Database.EnsureCreatedAsync();
+                Console.WriteLine("Database initialized successfully!");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Database initialization error: {ex.Message}");
+                throw;
+            }
+        }
+
+        public async Task<User?> GetUserByTelegramIdAsync(long telegramUserId)
+        {
+            return await _context.Users
+                .FirstOrDefaultAsync(u => u.TelegramUserId == telegramUserId);
+        }
+
+        public async Task<User> CreateOrUpdateUserAsync(long telegramUserId, string? username, string? firstName, string? lastName, int validityDays = 30)
+        {
+            var existingUser = await GetUserByTelegramIdAsync(telegramUserId);
+            
+            if (existingUser != null)
+            {
+                // Update existing user
+                existingUser.TelegramUsername = username;
+                existingUser.FirstName = firstName;
+                existingUser.LastName = lastName;
+                
+                _context.Users.Update(existingUser);
+                await _context.SaveChangesAsync();
+                return existingUser;
+            }
+            else
+            {
+                // Create new user
+                var newUser = new User
+                {
+                    TelegramUserId = telegramUserId,
+                    TelegramUsername = username,
+                    FirstName = firstName,
+                    LastName = lastName,
+                    CreatedAt = DateTime.UtcNow,
+                    ExpiryDate = DateTime.UtcNow.AddDays(validityDays),
+                    IsActive = true
+                };
+
+                _context.Users.Add(newUser);
+                await _context.SaveChangesAsync();
+                return newUser;
+            }
+        }
+
+        public async Task<bool> IsUserActiveAsync(long telegramUserId)
+        {
+            var user = await GetUserByTelegramIdAsync(telegramUserId);
+            return user != null && user.IsActive && user.ExpiryDate > DateTime.UtcNow;
+        }
+
+        public async Task<bool> ExtendUserSubscriptionAsync(long telegramUserId, int additionalDays)
+        {
+            var user = await GetUserByTelegramIdAsync(telegramUserId);
+            if (user == null) return false;
+
+            user.ExpiryDate = user.ExpiryDate.AddDays(additionalDays);
+            user.IsActive = true;
+
+            _context.Users.Update(user);
+            await _context.SaveChangesAsync();
+            return true;
+        }
+
+        public async Task<bool> DeactivateUserAsync(long telegramUserId)
+        {
+            var user = await GetUserByTelegramIdAsync(telegramUserId);
+            if (user == null) return false;
+
+            user.IsActive = false;
+            _context.Users.Update(user);
+            await _context.SaveChangesAsync();
+            return true;
+        }
+
+        public async Task<FacebookIdCheck> SaveFacebookIdCheckAsync(long telegramUserId, string facebookId, bool isLive, string? notes = null)
+        {
+            var user = await GetUserByTelegramIdAsync(telegramUserId);
+            if (user == null)
+            {
+                throw new InvalidOperationException("User not found");
+            }
+
+            var check = new FacebookIdCheck
+            {
+                UserId = user.Id,
+                FacebookId = facebookId,
+                IsLive = isLive,
+                CheckedAt = DateTime.UtcNow,
+                Notes = notes
+            };
+
+            _context.FacebookIdChecks.Add(check);
+            await _context.SaveChangesAsync();
+            return check;
+        }
+
+        public async Task<List<FacebookIdCheck>> GetUserFacebookChecksAsync(long telegramUserId, int limit = 50)
+        {
+            var user = await GetUserByTelegramIdAsync(telegramUserId);
+            if (user == null) return new List<FacebookIdCheck>();
+
+            return await _context.FacebookIdChecks
+                .Where(f => f.UserId == user.Id)
+                .OrderByDescending(f => f.CheckedAt)
+                .Take(limit)
+                .ToListAsync();
+        }
+
+        public async Task<Dictionary<string, int>> GetUserStatisticsAsync(long telegramUserId)
+        {
+            var user = await GetUserByTelegramIdAsync(telegramUserId);
+            if (user == null) return new Dictionary<string, int>();
+
+            var checks = await _context.FacebookIdChecks
+                .Where(f => f.UserId == user.Id)
+                .ToListAsync();
+
+            return new Dictionary<string, int>
+            {
+                ["TotalChecks"] = checks.Count,
+                ["LiveIds"] = checks.Count(c => c.IsLive),
+                ["DeadIds"] = checks.Count(c => !c.IsLive),
+                ["TodayChecks"] = checks.Count(c => c.CheckedAt.Date == DateTime.UtcNow.Date)
+            };
+        }
+
+        public async Task<int> GetTotalUsersAsync()
+        {
+            return await _context.Users.CountAsync();
+        }
+
+        public async Task<int> GetActiveUsersAsync()
+        {
+            return await _context.Users
+                .CountAsync(u => u.IsActive && u.ExpiryDate > DateTime.UtcNow);
+        }
+
+        public async Task<List<User>> GetExpiringUsersAsync(int days = 3)
+        {
+            var targetDate = DateTime.UtcNow.AddDays(days);
+            return await _context.Users
+                .Where(u => u.IsActive && u.ExpiryDate <= targetDate && u.ExpiryDate > DateTime.UtcNow)
+                .ToListAsync();
+        }
+
+        public void Dispose()
+        {
+            _context.Dispose();
+        }
+    }
+}

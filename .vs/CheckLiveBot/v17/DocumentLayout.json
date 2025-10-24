@@ -1,0 +1,303 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "D:\\CSharp\\2025\\Facebook\\CheckLiveBot\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{377AA50B-59B8-4EB1-85D9-8768F292B58F}|CheckLiveBot.csproj|d:\\csharp\\2025\\facebook\\checklivebot\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{377AA50B-59B8-4EB1-85D9-8768F292B58F}|CheckLiveBot.csproj|solutionrelative:program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{377AA50B-59B8-4EB1-85D9-8768F292B58F}|CheckLiveBot.csproj|d:\\csharp\\2025\\facebook\\checklivebot\\handlers\\callbackqueryhandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{377AA50B-59B8-4EB1-85D9-8768F292B58F}|CheckLiveBot.csproj|solutionrelative:handlers\\callbackqueryhandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{377AA50B-59B8-4EB1-85D9-8768F292B58F}|CheckLiveBot.csproj|d:\\csharp\\2025\\facebook\\checklivebot\\handlers\\messagehandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{377AA50B-59B8-4EB1-85D9-8768F292B58F}|CheckLiveBot.csproj|solutionrelative:handlers\\messagehandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{377AA50B-59B8-4EB1-85D9-8768F292B58F}|CheckLiveBot.csproj|d:\\csharp\\2025\\facebook\\checklivebot\\handlers\\commandhandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{377AA50B-59B8-4EB1-85D9-8768F292B58F}|CheckLiveBot.csproj|solutionrelative:handlers\\commandhandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{377AA50B-59B8-4EB1-85D9-8768F292B58F}|CheckLiveBot.csproj|d:\\csharp\\2025\\facebook\\checklivebot\\checklivebot.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{377AA50B-59B8-4EB1-85D9-8768F292B58F}|CheckLiveBot.csproj|solutionrelative:checklivebot.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{377AA50B-59B8-4EB1-85D9-8768F292B58F}|CheckLiveBot.csproj|d:\\csharp\\2025\\facebook\\checklivebot\\services\\authorizationservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{377AA50B-59B8-4EB1-85D9-8768F292B58F}|CheckLiveBot.csproj|solutionrelative:services\\authorizationservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{377AA50B-59B8-4EB1-85D9-8768F292B58F}|CheckLiveBot.csproj|d:\\csharp\\2025\\facebook\\checklivebot\\readme.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}|",
+      "RelativeMoniker": "D:0:0:{377AA50B-59B8-4EB1-85D9-8768F292B58F}|CheckLiveBot.csproj|solutionrelative:readme.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{377AA50B-59B8-4EB1-85D9-8768F292B58F}|CheckLiveBot.csproj|d:\\csharp\\2025\\facebook\\checklivebot\\services\\databaseservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{377AA50B-59B8-4EB1-85D9-8768F292B58F}|CheckLiveBot.csproj|solutionrelative:services\\databaseservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{377AA50B-59B8-4EB1-85D9-8768F292B58F}|CheckLiveBot.csproj|d:\\csharp\\2025\\facebook\\checklivebot\\utils\\checkliveuid.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{377AA50B-59B8-4EB1-85D9-8768F292B58F}|CheckLiveBot.csproj|solutionrelative:utils\\checkliveuid.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{377AA50B-59B8-4EB1-85D9-8768F292B58F}|CheckLiveBot.csproj|d:\\csharp\\2025\\facebook\\checklivebot\\database\\appdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{377AA50B-59B8-4EB1-85D9-8768F292B58F}|CheckLiveBot.csproj|solutionrelative:database\\appdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{377AA50B-59B8-4EB1-85D9-8768F292B58F}|CheckLiveBot.csproj|d:\\csharp\\2025\\facebook\\checklivebot\\models\\trackeduid.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{377AA50B-59B8-4EB1-85D9-8768F292B58F}|CheckLiveBot.csproj|solutionrelative:models\\trackeduid.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{377AA50B-59B8-4EB1-85D9-8768F292B58F}|CheckLiveBot.csproj|d:\\csharp\\2025\\facebook\\checklivebot\\models\\user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{377AA50B-59B8-4EB1-85D9-8768F292B58F}|CheckLiveBot.csproj|solutionrelative:models\\user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|D:\\CheckLiveBot.csproj||{8B382828-6202-11D1-8870-0000F87579D2}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|D:\\Data\\AppDbContext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|D:\\Models\\DatabaseModels.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|D:\\Services\\DatabaseService.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|D:\\Program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 15,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:128:0:{75188d03-9892-4ae2-abf1-207126247ce5}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "CommandHandler.cs",
+              "DocumentMoniker": "D:\\CSharp\\2025\\Facebook\\CheckLiveBot\\Handlers\\CommandHandler.cs",
+              "RelativeDocumentMoniker": "Handlers\\CommandHandler.cs",
+              "ToolTip": "D:\\CSharp\\2025\\Facebook\\CheckLiveBot\\Handlers\\CommandHandler.cs",
+              "RelativeToolTip": "Handlers\\CommandHandler.cs",
+              "ViewState": "AgIAAKEAAAAAAAAAAAAgwK0AAAAjAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-14T17:48:39.525Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "AuthorizationService.cs",
+              "DocumentMoniker": "D:\\CSharp\\2025\\Facebook\\CheckLiveBot\\Services\\AuthorizationService.cs",
+              "RelativeDocumentMoniker": "Services\\AuthorizationService.cs",
+              "ToolTip": "D:\\CSharp\\2025\\Facebook\\CheckLiveBot\\Services\\AuthorizationService.cs",
+              "RelativeToolTip": "Services\\AuthorizationService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-14T17:48:04.492Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "CallbackQueryHandler.cs",
+              "DocumentMoniker": "D:\\CSharp\\2025\\Facebook\\CheckLiveBot\\Handlers\\CallbackQueryHandler.cs",
+              "RelativeDocumentMoniker": "Handlers\\CallbackQueryHandler.cs",
+              "ToolTip": "D:\\CSharp\\2025\\Facebook\\CheckLiveBot\\Handlers\\CallbackQueryHandler.cs",
+              "RelativeToolTip": "Handlers\\CallbackQueryHandler.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACMAAAAhAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-14T17:47:43.062Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "MessageHandler.cs",
+              "DocumentMoniker": "D:\\CSharp\\2025\\Facebook\\CheckLiveBot\\Handlers\\MessageHandler.cs",
+              "RelativeDocumentMoniker": "Handlers\\MessageHandler.cs",
+              "ToolTip": "D:\\CSharp\\2025\\Facebook\\CheckLiveBot\\Handlers\\MessageHandler.cs",
+              "RelativeToolTip": "Handlers\\MessageHandler.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-14T17:47:30.445Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "README.md",
+              "DocumentMoniker": "D:\\CSharp\\2025\\Facebook\\CheckLiveBot\\README.md",
+              "RelativeDocumentMoniker": "README.md",
+              "ToolTip": "D:\\CSharp\\2025\\Facebook\\CheckLiveBot\\README.md",
+              "RelativeToolTip": "README.md",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAN4BAAAGAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001818|",
+              "WhenOpened": "2025-08-14T17:45:03.116Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 16,
+              "Title": "Program.cs",
+              "DocumentMoniker": "D:\\Program.cs",
+              "RelativeDocumentMoniker": "..\\..\\..\\..\\Program.cs",
+              "ToolTip": "D:\\Program.cs",
+              "RelativeToolTip": "..\\..\\..\\..\\Program.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-14T17:37:56.512Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "TrackedUid.cs",
+              "DocumentMoniker": "D:\\CSharp\\2025\\Facebook\\CheckLiveBot\\Models\\TrackedUid.cs",
+              "RelativeDocumentMoniker": "Models\\TrackedUid.cs",
+              "ToolTip": "D:\\CSharp\\2025\\Facebook\\CheckLiveBot\\Models\\TrackedUid.cs",
+              "RelativeToolTip": "Models\\TrackedUid.cs",
+              "ViewState": "AgIAAAYAAAAAAAAAAAAAABgAAAASAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-14T17:00:05.36Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "User.cs",
+              "DocumentMoniker": "D:\\CSharp\\2025\\Facebook\\CheckLiveBot\\Models\\User.cs",
+              "RelativeDocumentMoniker": "Models\\User.cs",
+              "ToolTip": "D:\\CSharp\\2025\\Facebook\\CheckLiveBot\\Models\\User.cs",
+              "RelativeToolTip": "Models\\User.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABEAAAA1AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-14T16:59:53.318Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "CheckLiveBot.csproj",
+              "DocumentMoniker": "D:\\CSharp\\2025\\Facebook\\CheckLiveBot\\CheckLiveBot.csproj",
+              "RelativeDocumentMoniker": "CheckLiveBot.csproj",
+              "ToolTip": "D:\\CSharp\\2025\\Facebook\\CheckLiveBot\\CheckLiveBot.csproj",
+              "RelativeToolTip": "CheckLiveBot.csproj",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2025-08-14T16:59:38.913Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "AppDbContext.cs",
+              "DocumentMoniker": "D:\\CSharp\\2025\\Facebook\\CheckLiveBot\\Database\\AppDbContext.cs",
+              "RelativeDocumentMoniker": "Database\\AppDbContext.cs",
+              "ToolTip": "D:\\CSharp\\2025\\Facebook\\CheckLiveBot\\Database\\AppDbContext.cs",
+              "RelativeToolTip": "Database\\AppDbContext.cs",
+              "ViewState": "AgIAAAsAAAAAAAAAAAAwwCIAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-14T16:55:59.743Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "DatabaseService.cs",
+              "DocumentMoniker": "D:\\CSharp\\2025\\Facebook\\CheckLiveBot\\Services\\DatabaseService.cs",
+              "RelativeDocumentMoniker": "Services\\DatabaseService.cs",
+              "ToolTip": "D:\\CSharp\\2025\\Facebook\\CheckLiveBot\\Services\\DatabaseService.cs",
+              "RelativeToolTip": "Services\\DatabaseService.cs",
+              "ViewState": "AgIAABYAAAAAAAAAAAAtwBsAAAAgAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-14T16:18:34.554Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "CheckLiveUid.cs",
+              "DocumentMoniker": "D:\\CSharp\\2025\\Facebook\\CheckLiveBot\\Utils\\CheckLiveUid.cs",
+              "RelativeDocumentMoniker": "Utils\\CheckLiveUid.cs",
+              "ToolTip": "D:\\CSharp\\2025\\Facebook\\CheckLiveBot\\Utils\\CheckLiveUid.cs",
+              "RelativeToolTip": "Utils\\CheckLiveUid.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACQAAAAVAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-14T16:24:38.878Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "CheckLiveBot.csproj",
+              "DocumentMoniker": "D:\\CheckLiveBot.csproj",
+              "RelativeDocumentMoniker": "..\\..\\..\\..\\CheckLiveBot.csproj",
+              "ToolTip": "D:\\CheckLiveBot.csproj",
+              "RelativeToolTip": "..\\..\\..\\..\\CheckLiveBot.csproj",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAAKAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2025-08-14T16:00:12.738Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Program.cs",
+              "DocumentMoniker": "D:\\CSharp\\2025\\Facebook\\CheckLiveBot\\Program.cs",
+              "RelativeDocumentMoniker": "Program.cs",
+              "ToolTip": "D:\\CSharp\\2025\\Facebook\\CheckLiveBot\\Program.cs",
+              "RelativeToolTip": "Program.cs",
+              "ViewState": "AgIAABEAAAAAAAAAAAAQwB0AAAAeAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-14T15:54:17.864Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 15,
+              "Title": "DatabaseService.cs",
+              "DocumentMoniker": "D:\\Services\\DatabaseService.cs",
+              "RelativeDocumentMoniker": "..\\..\\..\\..\\Services\\DatabaseService.cs",
+              "ToolTip": "D:\\Services\\DatabaseService.cs",
+              "RelativeToolTip": "..\\..\\..\\..\\Services\\DatabaseService.cs",
+              "ViewState": "AgIAAJMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-14T15:51:48.728Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "AppDbContext.cs",
+              "DocumentMoniker": "D:\\Data\\AppDbContext.cs",
+              "RelativeDocumentMoniker": "..\\..\\..\\..\\Data\\AppDbContext.cs",
+              "ToolTip": "D:\\Data\\AppDbContext.cs",
+              "RelativeToolTip": "..\\..\\..\\..\\Data\\AppDbContext.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABYAAABEAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-14T15:51:27.749Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "DatabaseModels.cs",
+              "DocumentMoniker": "D:\\Models\\DatabaseModels.cs",
+              "RelativeDocumentMoniker": "..\\..\\..\\..\\Models\\DatabaseModels.cs",
+              "ToolTip": "D:\\Models\\DatabaseModels.cs",
+              "RelativeToolTip": "..\\..\\..\\..\\Models\\DatabaseModels.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAAIAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-14T15:51:17.792Z"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
