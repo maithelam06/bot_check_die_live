@@ -3,18 +3,24 @@
 # =============================
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
+
+# Copy tất cả file
 COPY . .
-RUN dotnet restore
-RUN dotnet publish CheckLiveBot.csproj -c Release -o /app
+
+# Restore packages
+RUN dotnet restore ./CheckLiveBot.csproj
+
+# Publish
+RUN dotnet publish ./CheckLiveBot.csproj -c Release -o /app
 
 # =============================
 # 🚀 Runtime stage
 # =============================
-FROM mcr.microsoft.com/dotnet/runtime:8.0
+FROM mcr.microsoft.com/dotnet/aspnet:8.0
 WORKDIR /app
 COPY --from=build /app .
 
-# Fake port để Render giữ container sống
+# Render yêu cầu port
 EXPOSE 8080
 ENV ASPNETCORE_URLS=http://+:8080
 

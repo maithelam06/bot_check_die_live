@@ -15,6 +15,10 @@ namespace CheckLiveBot
         private static AuthorizationService _authService;
         private static MessageHandler _messageHandler;
         private static CallbackQueryHandler _callbackHandler;
+        private static MessageHandler _messageHandler = null!;
+private static CallbackQueryHandler _callbackHandler = null!;
+private static ITelegramBotClient _botClient = null!;
+
 
         private static readonly string BotToken = Environment.GetEnvironmentVariable("BOT_TOKEN");
 
