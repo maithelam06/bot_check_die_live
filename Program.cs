@@ -2,8 +2,8 @@ using Telegram.Bot;
 using Telegram.Bot.Polling;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
-using Telegram.Bot.Types.ReplyMarkups;
 using CheckLiveBot.Services;
+using System.Net; // 👈 thêm để fake web server
 
 namespace CheckLiveBot
 {
@@ -16,10 +16,17 @@ namespace CheckLiveBot
         private static MessageHandler _messageHandler;
         private static CallbackQueryHandler _callbackHandler;
 
-        private static readonly string BotToken = "7937452661:AAHo_Pau79tTMg_0kwI7gxk8zld0tszgIdQ";
+        // ⚠️ KHÔNG hardcode token nữa, dùng biến môi trường để bảo mật
+        private static readonly string BotToken = Environment.GetEnvironmentVariable("BOT_TOKEN");
 
         static async Task Main(string[] args)
         {
+            // Fake web server để Render nghĩ app là web service -> không bị kill ✅
+            var listener = new HttpListener();
+            listener.Prefixes.Add("http://*:8080/");
+            listener.Start();
+            Console.WriteLine("✅ Fake web server is running on port 8080...");
+
             _databaseService = new DatabaseService();
             await _databaseService.InitializeDatabaseAsync();
 
@@ -38,9 +45,9 @@ namespace CheckLiveBot
             );
 
             var me = await _botClient.GetMe();
-            Console.WriteLine($"Bot @{me.Username} đã khởi động.");
-            Console.ReadLine();
-            _cts.Cancel();
+            Console.WriteLine($"🤖 Bot @{me.Username} đã khởi động thành công.");
+
+            await Task.Delay(-1); // 👈 giữ bot chạy mãi
         }
 
         private static async Task HandleUpdateAsync(ITelegramBotClient bot, Update update, CancellationToken ct)
@@ -54,15 +61,14 @@ namespace CheckLiveBot
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error handling update: {ex.Message}");
+                Console.WriteLine($"❌ Error handling update: {ex.Message}");
             }
         }
 
         private static Task HandlePollingErrorAsync(ITelegramBotClient bot, Exception ex, CancellationToken ct)
         {
-            Console.WriteLine($"Polling error: {ex.Message}");
+            Console.WriteLine($"⚠️ Polling error: {ex.Message}");
             return Task.CompletedTask;
         }
     }
-
 }
