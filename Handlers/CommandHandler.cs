@@ -55,12 +55,12 @@ namespace CheckLiveBot
         }
 
         public static async Task HandleAddSingleUidAsync(
-     ITelegramBotClient bot,
-     long chatId,
-     long telegramUserId,
-     string messageText,
-     DatabaseService db,
-     CancellationToken ct)
+    ITelegramBotClient bot,
+    long chatId,
+    long telegramUserId,
+    string messageText,
+    DatabaseService db,
+    CancellationToken ct)
         {
             try
             {
@@ -129,6 +129,7 @@ namespace CheckLiveBot
                 await bot.SendMessage(chatId, "❌ Lỗi khi thêm UID.", cancellationToken: ct);
             }
         }
+
 
 
         public static async Task HandleViewUidListAsync(ITelegramBotClient bot, long chatId, long telegramUserId, DatabaseService db, CancellationToken ct)

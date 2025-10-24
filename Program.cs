@@ -3,7 +3,7 @@ using Telegram.Bot.Polling;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
 using CheckLiveBot.Services;
-using System.Net; // 👈 thêm để fake web server
+using System.Net;
 
 namespace CheckLiveBot
 {
@@ -16,17 +16,31 @@ namespace CheckLiveBot
         private static MessageHandler _messageHandler;
         private static CallbackQueryHandler _callbackHandler;
 
-        // ⚠️ KHÔNG hardcode token nữa, dùng biến môi trường để bảo mật
         private static readonly string BotToken = Environment.GetEnvironmentVariable("BOT_TOKEN");
 
         static async Task Main(string[] args)
         {
-            // Fake web server để Render nghĩ app là web service -> không bị kill ✅
+            // ✅ Fake web server trả về HTTP để Render không timeout
+            var port = Environment.GetEnvironmentVariable("PORT") ?? "8080";
             var listener = new HttpListener();
-            listener.Prefixes.Add("http://*:8080/");
+            listener.Prefixes.Add($"http://*:{port}/");
             listener.Start();
-            Console.WriteLine("✅ Fake web server is running on port 8080...");
+            Console.WriteLine($"✅ Fake web server is running on port {port}...");
 
+            _ = Task.Run(async () =>
+            {
+                while (true)
+                {
+                    var context = await listener.GetContextAsync();
+                    var response = context.Response;
+                    var buffer = System.Text.Encoding.UTF8.GetBytes("✅ Bot is running...");
+                    response.ContentLength64 = buffer.Length;
+                    await response.OutputStream.WriteAsync(buffer, 0, buffer.Length);
+                    response.OutputStream.Close();
+                }
+            });
+
+            // ✅ Khởi tạo database và service
             _databaseService = new DatabaseService();
             await _databaseService.InitializeDatabaseAsync();
 
@@ -34,6 +48,7 @@ namespace CheckLiveBot
             _messageHandler = new MessageHandler(_databaseService, _authService);
             _callbackHandler = new CallbackQueryHandler(_databaseService, _authService);
 
+            // ✅ Khởi tạo bot Telegram
             _botClient = new TelegramBotClient(BotToken);
             _cts = new CancellationTokenSource();
 
@@ -47,7 +62,11 @@ namespace CheckLiveBot
             var me = await _botClient.GetMe();
             Console.WriteLine($"🤖 Bot @{me.Username} đã khởi động thành công.");
 
-            await Task.Delay(-1); // 👈 giữ bot chạy mãi
+            // ✅ Chạy background checker sau khi bot đã sẵn sàng
+            var uidChecker = new UidCheckerBackground(_botClient, _databaseService, _cts.Token);
+            _ = uidChecker.StartAsync();
+
+            await Task.Delay(-1); // giữ bot chạy mãi
         }
 
         private static async Task HandleUpdateAsync(ITelegramBotClient bot, Update update, CancellationToken ct)
