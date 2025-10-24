@@ -54,15 +54,31 @@ namespace CheckLiveBot
             await bot.SendMessage(chatId, text, parseMode: ParseMode.Html, cancellationToken: ct);
         }
 
-        public static async Task HandleAddSingleUidAsync(ITelegramBotClient bot, long chatId, long telegramUserId, string messageText, DatabaseService db, CancellationToken ct)
+        public static async Task HandleAddSingleUidAsync(
+     ITelegramBotClient bot,
+     long chatId,
+     long telegramUserId,
+     string messageText,
+     DatabaseService db,
+     CancellationToken ct)
         {
             try
             {
+                // ✅ Kiểm tra độ dài chuỗi để tránh lỗi Substring
+                if (string.IsNullOrWhiteSpace(messageText) || messageText.Length <= 5)
+                {
+                    await bot.SendMessage(chatId,
+                        "⚠️ Sai cú pháp. Dùng:\n<code>/add UID | ghi chú | giá</code>\nVí dụ: <code>/add 100012345678901 VIP khách | 50000</code>",
+                        parseMode: ParseMode.Html, cancellationToken: ct);
+                    return;
+                }
+
                 var content = messageText.Substring(5).Trim();
                 var parts = content.Split('|', StringSplitOptions.RemoveEmptyEntries)
                                    .Select(p => p.Trim())
                                    .ToArray();
 
+                // ✅ Kiểm tra định dạng có đủ 2 phần
                 if (parts.Length < 2)
                 {
                     await bot.SendMessage(chatId,
@@ -74,6 +90,7 @@ namespace CheckLiveBot
                 var firstPart = parts[0];
                 var firstSpaceIndex = firstPart.IndexOf(' ');
 
+                // ✅ Kiểm tra xem người dùng có nhập ghi chú hay chưa
                 if (firstSpaceIndex == -1)
                 {
                     await bot.SendMessage(chatId,
@@ -86,12 +103,24 @@ namespace CheckLiveBot
                 var notePart = firstPart[(firstSpaceIndex + 1)..].Trim();
                 var pricePart = parts[1];
 
+                // ✅ Kiểm tra UID có hợp lệ hay không
+                if (string.IsNullOrWhiteSpace(uidPart) || uidPart.Length < 5)
+                {
+                    await bot.SendMessage(chatId,
+                        "❌ UID không hợp lệ. Vui lòng kiểm tra lại.",
+                        parseMode: ParseMode.Html, cancellationToken: ct);
+                    return;
+                }
+
+                // ✅ Kiểm tra UID sống hay chết
                 var isLive = await CheckLiveUid.CheckLiveAsync(uidPart) == "live";
 
+                // ✅ Lưu vào database
                 await db.SaveOrUpdateTrackedUidAsync(telegramUserId, uidPart, notePart, pricePart, isLive);
 
+                // ✅ Phản hồi thành công
                 await bot.SendMessage(chatId,
-                    $"✅ Đã thêm UID <code>{uidPart}</code> với ghi chú \"{notePart}\" và giá {pricePart}",
+                    $"✅ Đã thêm UID <code>{uidPart}</code>\n📝 Ghi chú: {notePart}\n💰 Giá: {pricePart}\n📡 Trạng thái: {(isLive ? "✅ LIVE" : "❌ DEAD")}",
                     parseMode: ParseMode.Html, cancellationToken: ct);
             }
             catch (Exception ex)
@@ -100,6 +129,7 @@ namespace CheckLiveBot
                 await bot.SendMessage(chatId, "❌ Lỗi khi thêm UID.", cancellationToken: ct);
             }
         }
+
 
         public static async Task HandleViewUidListAsync(ITelegramBotClient bot, long chatId, long telegramUserId, DatabaseService db, CancellationToken ct)
         {
